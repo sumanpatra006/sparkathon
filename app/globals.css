@@ -3,11 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --walmart-blue: #0071ce;
+  --walmart-dark-blue: #004f9a;
+  --walmart-yellow: #ffc220;
+  --walmart-gray: #f8f9fa;
+  --walmart-dark-gray: #6c757d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-walmart-blue: var(--walmart-blue);
+  --color-walmart-dark-blue: var(--walmart-dark-blue);
+  --color-walmart-yellow: var(--walmart-yellow);
+  --color-walmart-gray: var(--walmart-gray);
+  --color-walmart-dark-gray: var(--walmart-dark-gray);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -23,4 +33,113 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Walmart brand colors utility classes */
+.text-walmart-blue {
+  color: var(--walmart-blue);
+}
+
+.bg-walmart-blue {
+  background-color: var(--walmart-blue);
+}
+
+.border-walmart-blue {
+  border-color: var(--walmart-blue);
+}
+
+.text-walmart-dark-blue {
+  color: var(--walmart-dark-blue);
+}
+
+.bg-walmart-dark-blue {
+  background-color: var(--walmart-dark-blue);
+}
+
+.bg-walmart-gray {
+  background-color: var(--walmart-gray);
+}
+
+.text-walmart-dark-gray {
+  color: var(--walmart-dark-gray);
+}
+
+/* Enhanced button styles with hover effects */
+.btn-primary {
+  @apply bg-walmart-blue hover:bg-walmart-dark-blue text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg cursor-pointer;
+}
+
+.btn-secondary {
+  @apply bg-white hover:bg-gray-50 text-walmart-blue border border-walmart-blue font-medium py-3 px-6 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-md cursor-pointer;
+}
+
+.btn-ghost {
+  @apply text-walmart-blue hover:text-walmart-dark-blue font-medium py-2 px-4 rounded-lg transition-all duration-200 ease-in-out hover:bg-blue-50 cursor-pointer;
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-all duration-300 ease-in-out hover:shadow-xl hover:transform hover:-translate-y-1 cursor-pointer;
+}
+
+/* Input focus effects */
+.input-focus {
+  @apply focus:ring-2 focus:ring-walmart-blue focus:border-transparent transition-all duration-200 ease-in-out;
+}
+
+/* Mobile navigation styles */
+.mobile-nav {
+  @apply fixed top-0 left-0 w-full h-full bg-white z-50 transform transition-transform duration-300 ease-in-out;
+}
+
+.mobile-nav.hidden {
+  @apply -translate-x-full;
+}
+
+.mobile-nav.visible {
+  @apply translate-x-0;
+}
+
+/* Responsive text utilities */
+.text-responsive {
+  @apply text-sm sm:text-base md:text-lg lg:text-xl;
+}
+
+.text-responsive-xl {
+  @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+}
+
+.text-responsive-2xl {
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+}
+
+/* Responsive spacing */
+.container-responsive {
+  @apply px-4 sm:px-6 lg:px-8;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
