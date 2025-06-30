@@ -58,23 +58,14 @@ export default function SignupForm({ onLogin }) {
     if (validateForm()) {
       try {
         const endpoint =
-          registerAs === "admin"
-            ? "/api/v1/admin/register"
-            : "/api/v1/users/new";
-        const payload =
-          registerAs === "admin"
-            ? {
-                name: formData.username,
-                email: formData.email,
-                password: formData.password,
-              }
-            : {
-                name: formData.username,
-                email: formData.email,
-                password: formData.password,
-              };
+          registerAs === "admin" ? "/v1/admin/new" : "/v1/users/new";
+        const payload = {
+          name: formData.username,
+          email: formData.email,
+          password: formData.password,
+        };
         const res = await api.post(endpoint, payload);
-        toast.success(res.data.message || "Registered Successfully");
+        toast.success(res.data.message || "Signup Successfully");
         setFormData({
           username: "",
           email: "",
@@ -82,13 +73,9 @@ export default function SignupForm({ onLogin }) {
           confirmPassword: "",
           agreeToTerms: false,
         });
-        if (registerAs === "admin") {
-          window.location.href = "/admin/dashboard";
-        } else if (onLogin) {
-          onLogin();
-        }
+        if (onLogin) onLogin();
       } catch (err) {
-        toast.error(err?.response?.data?.message || "Registration failed");
+        toast.error(err?.response?.data?.message || "Signup failed");
       }
     }
   };

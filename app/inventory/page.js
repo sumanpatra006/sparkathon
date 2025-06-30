@@ -8,10 +8,27 @@ export default function InventoryPage() {
   const [cart, setCart] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [popupQuantity, setPopupQuantity] = useState(1);
   const [isOrdering, setIsOrdering] = useState(false);
 
-  const handleAddToCart = (item) => {
-    setCart((prev) => [...prev, item]);
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    setPopupQuantity(1);
+    setShowPopup(true);
+  };
+
+  const handleAddToCart = () => {
+    setCart((prev) => {
+      const found = prev.find((i) => i.productId === selectedItem.productId);
+      if (found) {
+        return prev.map((i) =>
+          i.productId === selectedItem.productId
+            ? { ...i, quantity: i.quantity + popupQuantity }
+            : i
+        );
+      }
+      return [...prev, { ...selectedItem, quantity: popupQuantity }];
+    });
     setShowPopup(false);
     toast.success("Added to cart");
   };
@@ -27,8 +44,13 @@ export default function InventoryPage() {
         (sum, item) => sum + item.price * item.quantity,
         0
       );
-      const res = await api.post("/api/v1/orders/new", {
-        items: cart,
+      const res = await api.post("/v1/orders/new", {
+        items: cart.map(({ name, productId, price, quantity }) => ({
+          name,
+          productId,
+          price,
+          quantity,
+        })),
         totalAmount,
       });
       toast.success(res.data.message || "Order Created Successfully");
@@ -40,26 +62,28 @@ export default function InventoryPage() {
     }
   };
 
+  const handleRemoveFromCart = (productId) => {
+    setCart((prev) => prev.filter((i) => i.productId !== productId));
+  };
+
   return (
     <div className="container-responsive mx-auto py-12 px-4 bg-[#f6f7fa] min-h-screen">
       <Toaster />
-      <h1 className="text-3xl font-bold text-walmart-blue mb-8">
+      <h1 className="text-3xl font-bold text-walmart-blue mb-8 text-center">
         Shop by Category
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {categories.map((cat) => (
-          <div
-            key={cat.name}
-            className="bg-white rounded-2xl shadow-lg p-6 border border-[#e0e0e0]"
-          >
-            <h2 className="text-xl font-semibold mb-4 text-walmart-dark-blue">
+          <div key={cat.name}>
+            <h2 className="text-xl font-semibold mb-4 text-walmart-dark-blue text-center">
               {cat.name}
             </h2>
             <div className="grid grid-cols-1 gap-4">
               {cat.items.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex flex-col md:flex-row md:items-center md:justify-between border rounded-xl p-4 bg-[#f9fafb] hover:shadow-md transition-shadow"
+                  className="flex flex-col md:flex-row md:items-center md:justify-between border rounded-xl p-4 bg-[#f9fafb] hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => handleItemClick(item)}
                 >
                   <div className="flex items-center space-x-4">
                     <img
@@ -81,19 +105,10 @@ export default function InventoryPage() {
                         </span>
                       </div>
                       <div className="text-sm text-gray-700">
-                        Quantity: {item.quantity}
+                        Stock: {item.quantity}
                       </div>
                     </div>
                   </div>
-                  <button
-                    className="border border-walmart-blue text-walmart-blue font-semibold rounded-full px-6 py-2 mt-4 md:mt-0 hover:bg-walmart-blue hover:text-white transition-colors"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setShowPopup(true);
-                    }}
-                  >
-                    Options
-                  </button>
                 </div>
               ))}
             </div>
@@ -112,15 +127,21 @@ export default function InventoryPage() {
           <ul className="mb-4">
             {cart.map((item, idx) => (
               <li
-                key={idx}
-                className="flex justify-between items-center border-b py-2"
+                key={item.productId}
+                className="flex justify-between items-center border-b py-2 text-black"
               >
                 <span>
                   {item.name} (x{item.quantity})
                 </span>
-                <span className="text-walmart-blue font-bold">
-                  ₹{item.price * item.quantity}
+                <span className=" font-bold text-black">
+                  ₹{(item.price * item.quantity).toFixed(2)}
                 </span>
+                <button
+                  className="ml-4 text-red-500 hover:underline"
+                  onClick={() => handleRemoveFromCart(item.productId)}
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
@@ -153,11 +174,35 @@ export default function InventoryPage() {
               </span>
             </div>
             <div className="mb-4 text-center text-gray-700">
-              Quantity: {selectedItem.quantity}
+              Stock: {selectedItem.quantity}
+            </div>
+            <div className="mb-4 text-center">
+              <label
+                htmlFor="quantity"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Quantity
+              </label>
+              <input
+                id="quantity"
+                type="number"
+                min={1}
+                max={selectedItem.quantity}
+                value={popupQuantity}
+                onChange={(e) =>
+                  setPopupQuantity(
+                    Math.max(
+                      1,
+                      Math.min(selectedItem.quantity, Number(e.target.value))
+                    )
+                  )
+                }
+                className="w-24 border rounded px-2 py-1 text-center text-black"
+              />
             </div>
             <button
               className="btn-primary w-full mb-2"
-              onClick={() => handleAddToCart(selectedItem)}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </button>

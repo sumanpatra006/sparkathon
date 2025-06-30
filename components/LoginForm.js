@@ -37,7 +37,7 @@ export default function LoginForm({ onSignup, onLoginSuccess }) {
     if (validateForm()) {
       try {
         const endpoint =
-          loginAs === "admin" ? "/api/v1/admin/login" : "/api/v1/users/login";
+          loginAs === "admin" ? "/v1/admin/login" : "/v1/users/login";
         const payload = {
           email: formData.email,
           password: formData.password,

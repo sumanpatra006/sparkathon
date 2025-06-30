@@ -21,7 +21,7 @@ export default function OrdersPage() {
     async function fetchOrders() {
       setLoading(true);
       try {
-        const res = await api.get("/api/v1/orders/user-orders");
+        const res = await api.get("/v1/orders/user-orders");
         setOrders(res.data.orders || []);
       } catch (err) {
         toast.error("Failed to fetch orders");
@@ -37,7 +37,7 @@ export default function OrdersPage() {
     setOrderDetails(null);
     setDetailsLoading(true);
     try {
-      const res = await api.get(`/api/v1/orders/${orderId}`);
+      const res = await api.get(`/v1/orders/${orderId}`);
       setOrderDetails(res.data.order);
     } catch (err) {
       toast.error("Failed to fetch order details");
@@ -55,7 +55,9 @@ export default function OrdersPage() {
   function getProductImage(productId) {
     for (const cat of categories) {
       const found = cat.items.find((item) => item.productId === productId);
-      if (found) return found.image;
+      if (found) {
+        return found.image;
+      }
     }
     return "";
   }
@@ -108,7 +110,7 @@ export default function OrdersPage() {
       return;
     }
     try {
-      const res = await api.post("/api/v1/returns/new", formData, {
+      const res = await api.post("/v1/returns/new", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setReturnStatus(res.data.return);
@@ -133,7 +135,10 @@ export default function OrdersPage() {
       ) : orders.length === 0 ? (
         <div className="text-center text-gray-500">No orders found.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 overflow-x-auto md:overflow-x-visible scrollbar-thin scrollbar-thumb-walmart-blue scrollbar-track-gray-200"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           {orders.map((order) => (
             <div
               key={order._id}
@@ -250,7 +255,10 @@ export default function OrdersPage() {
       {/* Return Modal */}
       {showReturnModal && returnItem && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-[#e0e0e0] relative">
+          <div
+            className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-[#e0e0e0] relative overflow-y-auto"
+            style={{ maxHeight: "90vh" }}
+          >
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-walmart-blue text-2xl font-bold"
               onClick={() => setShowReturnModal(false)}
@@ -269,7 +277,7 @@ export default function OrdersPage() {
                 <input
                   name="reason"
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-2 text-black"
                   placeholder="Enter reason"
                 />
               </div>
@@ -282,7 +290,7 @@ export default function OrdersPage() {
                   type="number"
                   min="1"
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-2 text-black"
                   placeholder="Number of delivered items"
                 />
               </div>
@@ -295,7 +303,7 @@ export default function OrdersPage() {
                   type="number"
                   min="0"
                   required
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border rounded-lg px-3 py-2 text-black"
                   placeholder="Days since delivery"
                 />
               </div>
@@ -309,7 +317,7 @@ export default function OrdersPage() {
                   accept="image/*"
                   ref={userImageInput}
                   required
-                  className="w-full"
+                  className="w-full text-black"
                 />
               </div>
               <div>
@@ -334,11 +342,11 @@ export default function OrdersPage() {
               </button>
             </form>
             {returnStatus && (
-              <div className="mt-6 bg-[#f6f7fa] rounded-lg p-4 border border-walmart-blue">
+              <div className="mt-6 bg-[#f6f7fa] rounded-lg p-4 border border-walmart-blue text-black">
                 <h3 className="text-lg font-bold text-walmart-blue mb-2">
                   Return Status
                 </h3>
-                <div className="mb-1">
+                <div className="mb-1 ">
                   Status:{" "}
                   <span className="font-bold">{returnStatus.status}</span>
                 </div>

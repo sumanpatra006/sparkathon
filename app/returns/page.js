@@ -14,7 +14,7 @@ export default function ReturnsPage() {
     async function fetchReturns() {
       setLoading(true);
       try {
-        const res = await api.get("/api/v1/returns/user");
+        const res = await api.get("/v1/returns/user");
         setReturns(res.data.returns || []);
       } catch (err) {
         toast.error("Failed to fetch return summaries");
@@ -30,19 +30,38 @@ export default function ReturnsPage() {
     setReturnDetails(null);
     setDetailsLoading(true);
     try {
-      const res = await api.get(`/api/v1/returns/${returnId}`);
-      setReturnDetails(res.data.returnOrder);
+      const [detailsRes, statusRes] = await Promise.all([
+        api.get(`/v1/returns/${returnId}`),
+        api.get(`/v1/returns/${returnId}/status`),
+      ]);
+      const details = detailsRes.data.returnOrder;
+      // Update status from statusRes if available
+      if (statusRes.data && statusRes.data.status) {
+        details.status = statusRes.data.status;
+        details.updatedAt = statusRes.data.updatedAt;
+      }
+      setReturnDetails(details);
+      // Also update the status in the summary list
+      setReturns((prev) =>
+        prev.map((r) =>
+          r._id === returnId
+            ? { ...r, status: details.status, updatedAt: details.updatedAt }
+            : r
+        )
+      );
     } catch (err) {
-      toast.error("Failed to fetch return details");
+      toast.error("Failed to fetch return details or status");
     } finally {
       setDetailsLoading(false);
     }
   };
 
   const handleCancelReturn = async () => {
-    if (!selectedReturnId) return;
+    if (!selectedReturnId){
+      return;
+    }
     try {
-      const res = await api.put(`/api/v1/returns/${selectedReturnId}/cancel`);
+      const res = await api.put(`/v1/returns/${selectedReturnId}/cancel`);
       toast.success(res.data.message || "Return request cancelled");
       // Refresh details and list
       if (returnDetails) {

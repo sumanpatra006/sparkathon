@@ -13,8 +13,12 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Walmart Smart Returns - AI-Powered Return Management",
-  description: "Advanced return management system with AI risk scoring, fraud detection, and automated workflows for Walmart customers.",
+  description:
+    "Advanced return management system with AI risk scoring, fraud detection, and automated workflows for Walmart customers.",
   keywords: "Walmart returns, AI returns, fraud detection, return management",
+  icons: {
+    icon: "/walmart.png",
+  },
 };
 
 export default function RootLayout({ children }) {

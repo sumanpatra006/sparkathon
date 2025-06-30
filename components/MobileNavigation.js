@@ -12,10 +12,17 @@ export default function MobileNavigation() {
     setIsAuthenticated(!!localStorage.getItem("token"));
   }, [pathname]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      await fetch("https://node-api-2ok4.onrender.com/api/v1/users/logout", {
+        method: "GET",
+        credentials: "include",
+      });
+    } catch (err) {
+      // Optionally handle error
+    }
     setIsAuthenticated(false);
-    window.location.reload();
+    window.location.href = "/";
   };
 
   const toggleMenu = () => {

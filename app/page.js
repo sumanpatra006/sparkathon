@@ -15,12 +15,6 @@ export default function Home() {
       <HomeHeader />
       <div className="pt-16">
         <HeroSection />
-        <button
-          onClick={() => router.push("/inventory")}
-          className="btn-secondary text-lg px-8 py-4 mt-4"
-        >
-          Shopping
-        </button>
         <FeaturesSection />
         <StatsSection />
         <CTASection />

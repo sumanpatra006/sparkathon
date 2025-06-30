@@ -4,7 +4,10 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import DashboardStats from "@/components/DashboardStats";
 import RecentReturnsTable from "@/components/RecentReturnsTable";
+import ImageVerificationList from "@/components/ImageVerificationList";
 import api from "@/api/api";
+import { toast } from "react-hot-toast";
+import categories from "@/data/products";
 
 function getStatusColor(status) {
   switch (status) {
@@ -106,6 +109,18 @@ function ReturnsTable({ returns }) {
   );
 }
 
+// Helper to map productId to original image
+function getOriginalImage(productId) {
+  for (const cat of categories) {
+    for (const item of cat.items) {
+      if (item.productId === productId) {
+        return item.image;
+      }
+    }
+  }
+  return undefined;
+}
+
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -129,6 +144,13 @@ export default function Dashboard() {
     highAlerts: 0,
     mediumAlerts: 0,
   });
+  const [selectedReturnId, setSelectedReturnId] = useState(null);
+  const [returnDetails, setReturnDetails] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [adminAction, setAdminAction] = useState("");
+  const [refundAmount, setRefundAmount] = useState("");
+  const [actionResult, setActionResult] = useState(null);
 
   useEffect(() => {
     async function fetchReturns() {
@@ -136,14 +158,18 @@ export default function Dashboard() {
       try {
         // Build query params for riskLevel and status
         let query = [];
-        if (riskLevelFilter !== "all")
+        if (riskLevelFilter !== "all"){
           query.push(
             `risklevel=${
               riskLevelFilter.charAt(0).toUpperCase() + riskLevelFilter.slice(1)
             }`
           );
-        if (statusFilter !== "all") query.push(`status=${statusFilter}`);
-        const url = `/api/v1/admin/return${
+        }
+          
+        if (statusFilter !== "all") {
+          query.push(`status=${statusFilter}`);
+        }
+        const url = `/v1/admin/return${
           query.length ? "?" + query.join("&") : ""
         }`;
         const res = await api.get(url);
@@ -164,7 +190,7 @@ export default function Dashboard() {
             0
           ),
           avgProcessingTime: 2.4, // Placeholder
-          customerSatisfaction: 98.5, // Placeholder
+          customerSatisfaction: 98.5,
         });
       } catch (err) {
         setReturnsData([]);
@@ -187,7 +213,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchFraudStats() {
       try {
-        const res = await api.get("/api/v1/admin/return?risklevel=High");
+        const res = await api.get("/v1/admin/return?risklevel=High");
         const summary = res.data.data.summary || {};
         setFraudStats({
           totalFraudAlerts: summary.totalFraudAlerts || 0,
@@ -217,6 +243,135 @@ export default function Dashboard() {
     date: r.returnDate ? new Date(r.returnDate).toLocaleDateString() : "",
   }));
 
+  // Prepare items for image verification
+  const imageVerificationItems = returnsData.map((r) => {
+    const firstProduct = r.order?.items?.[0];
+    return {
+      id: r._id,
+      product: firstProduct?.name || "N/A",
+      productId: firstProduct?.productId,
+      originalImage: getOriginalImage(firstProduct?.productId),
+      image: r.imageUrl,
+      blurScore: r.blurScore,
+      ssimScore: r.ssimScore,
+      metadataScore: r.metadataScore,
+      finalScore: r.finalScore,
+      status: r.status,
+      riskLevel: r.riskLevel,
+    };
+  });
+
+  const handleReturnClick = async (returnId) => {
+    setSelectedReturnId(returnId);
+    setReturnDetails(null);
+    setActionResult(null);
+    setDetailsLoading(true);
+    try {
+      const res = await api.get(`/v1/admin/return/${returnId}`);
+      setReturnDetails(res.data.return);
+    } catch (err) {
+      toast.error("Failed to fetch return details");
+    } finally {
+      setDetailsLoading(false);
+    }
+  };
+
+  const handleAdminAction = async (status) => {
+    if (!selectedReturnId) {
+      return;
+    }
+    setActionLoading(true);
+    setActionResult(null);
+    try {
+      const payload = {
+        riskLevel: returnDetails.riskLevel,
+        action:
+          adminAction ||
+          (status === "Refunded" ? "refund" : status.toLowerCase()),
+        refundAmount: status === "Refunded" ? Number(refundAmount) : undefined,
+        status,
+      };
+      const res = await api.put(
+        `/v1/admin/return/${selectedReturnId}`,
+        payload
+      );
+      toast.success(res.data.message || "Return status updated");
+      setActionResult(res.data);
+      // Update status in modal and table
+      setReturnDetails((prev) => ({
+        ...prev,
+        status: res.data.updatedStatus,
+        refundAmount: res.data.refundAmount,
+      }));
+      setReturnsData((prev) =>
+        prev.map((r) =>
+          r._id === selectedReturnId
+            ? { ...r, status: res.data.updatedStatus }
+            : r
+        )
+      );
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to update return");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedReturnId(null);
+    setReturnDetails(null);
+    setAdminAction("");
+    setRefundAmount("");
+    setActionResult(null);
+  };
+
+  // Admin action handlers
+  const handleVerifyApprove = async (id) => {
+    try {
+      const res = await api.put(`/v1/admin/return/${id}`, {
+        status: "Approved",
+      });
+      toast.success(res.data.message || "Return approved");
+      setReturnsData((prev) => prev.filter((r) => r._id !== id));
+      return { success: true, message: res.data.message };
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to approve return");
+      return { success: false };
+    }
+  };
+  const handleVerifyReject = async (id) => {
+    try {
+      const res = await api.put(`/v1/admin/return/${id}`, {
+        status: "Rejected",
+      });
+      toast.success(res.data.message || "Return rejected");
+      setReturnsData((prev) => prev.filter((r) => r._id !== id));
+      return { success: true, message: res.data.message };
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to reject return");
+      return { success: false };
+    }
+  };
+  const handleVerifyRefund = async (id) => {
+    const refundAmount = prompt("Enter refund amount:");
+    if (!refundAmount){
+      return { success: false };
+    }
+    try {
+      const res = await api.put(`/v1/admin/return/${id}`, {
+        status: "Refunded",
+        action: "refund",
+        refundAmount: Number(refundAmount),
+      });
+      toast.success(res.data.message || "Refund processed");
+      setReturnsData((prev) => prev.filter((r) => r._id !== id));
+      return { success: true, message: res.data.message };
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to process refund");
+      return { success: false };
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />
@@ -243,6 +398,7 @@ export default function Dashboard() {
                     getStatusColor={getStatusColor}
                     getRiskColor={getRiskColor}
                     maxItems={3}
+                    onReturnClick={handleReturnClick}
                   />
                 </div>
               </div>
@@ -300,33 +456,12 @@ export default function Dashboard() {
                 <h2 className="text-xl lg:text-2xl font-bold text-walmart-dark-blue mb-6">
                   Image Verification
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div className="bg-gray-50 rounded-lg p-4 flex flex-col items-center shadow-sm">
-                    <img
-                      src="https://via.placeholder.com/120"
-                      alt="Product"
-                      className="rounded mb-4 w-24 h-24 object-cover"
-                    />
-                    <div className="font-bold text-gray-900 mb-2">
-                      Samsung TV 55"
-                    </div>
-                    <div className="text-xs text-gray-700 mb-2">
-                      Return ID: RET-001
-                    </div>
-                    <div className="flex gap-2 mb-2">
-                      <button className="btn-primary px-4 py-1 text-xs">
-                        Approve
-                      </button>
-                      <button className="btn-secondary px-4 py-1 text-xs">
-                        Reject
-                      </button>
-                    </div>
-                    <textarea
-                      className="w-full rounded border border-gray-300 p-2 text-xs text-gray-900"
-                      placeholder="Add comment (optional)"
-                    ></textarea>
-                  </div>
-                </div>
+                <ImageVerificationList
+                  items={imageVerificationItems}
+                  onApprove={handleVerifyApprove}
+                  onReject={handleVerifyReject}
+                  onRefund={handleVerifyRefund}
+                />
               </div>
             )}
             {activeTab === "analytics" && (
@@ -389,6 +524,144 @@ export default function Dashboard() {
                 <p className="text-walmart-dark-gray">
                   Settings interface will be implemented here.
                 </p>
+              </div>
+            )}
+            {/* Return Details Modal */}
+            {selectedReturnId && (
+              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-[#e0e0e0] relative">
+                  <button
+                    className="absolute top-2 right-2 text-gray-400 hover:text-walmart-blue text-2xl font-bold"
+                    onClick={closeModal}
+                    aria-label="Close"
+                  >
+                    ×
+                  </button>
+                  {detailsLoading ? (
+                    <div className="text-center text-walmart-blue text-lg">
+                      Loading return details...
+                    </div>
+                  ) : returnDetails ? (
+                    <>
+                      <h2 className="text-2xl font-bold mb-2 text-walmart-blue">
+                        Return Details
+                      </h2>
+                      <div className="mb-2 text-gray-700">
+                        Return ID:{" "}
+                        <span className="font-mono">{returnDetails._id}</span>
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Status:{" "}
+                        <span className="font-bold text-walmart-blue">
+                          {returnDetails.status}
+                        </span>
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Risk Level:{" "}
+                        <span className="font-bold">
+                          {returnDetails.riskLevel}
+                        </span>
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Reason:{" "}
+                        <span className="font-normal">
+                          {returnDetails.reason}
+                        </span>
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Return Date:{" "}
+                        {new Date(returnDetails.returnDate).toLocaleString()}
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Blur Score: {returnDetails.blurScore}
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        SSIM Score: {returnDetails.ssimScore}
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Metadata Score: {returnDetails.metadataScore}
+                      </div>
+                      <div className="mb-2 text-gray-700">
+                        Final Score: {returnDetails.finalScore}
+                      </div>
+                      {returnDetails.imageUrl && (
+                        <img
+                          src={returnDetails.imageUrl}
+                          alt="Return"
+                          className="w-32 h-32 object-cover rounded-lg border mt-2"
+                        />
+                      )}
+                      <div className="mt-4 flex flex-col gap-2">
+                        <div className="font-semibold mb-1">Admin Actions:</div>
+                        <div className="flex gap-2 mb-2">
+                          <button
+                            className="btn-primary"
+                            disabled={actionLoading}
+                            onClick={() => handleAdminAction("Approved")}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            className="btn-secondary"
+                            disabled={actionLoading}
+                            onClick={() => handleAdminAction("Rejected")}
+                          >
+                            Reject
+                          </button>
+                          <button
+                            className="btn-secondary"
+                            disabled={actionLoading}
+                            onClick={() => setAdminAction("refund")}
+                          >
+                            Refund
+                          </button>
+                        </div>
+                        {adminAction === "refund" && (
+                          <div className="flex flex-col gap-2 mb-2">
+                            <input
+                              type="number"
+                              min="1"
+                              placeholder="Refund Amount"
+                              value={refundAmount}
+                              onChange={(e) => setRefundAmount(e.target.value)}
+                              className="border rounded px-2 py-1"
+                            />
+                            <button
+                              className="btn-primary"
+                              disabled={actionLoading || !refundAmount}
+                              onClick={() => handleAdminAction("Refunded")}
+                            >
+                              Confirm Refund
+                            </button>
+                          </div>
+                        )}
+                        {actionResult && (
+                          <div className="mt-4 p-3 bg-gray-100 rounded">
+                            <div className="font-bold text-walmart-blue mb-1">
+                              {actionResult.userMessage}
+                            </div>
+                            {actionResult.qrCodeUrl && (
+                              <img
+                                src={actionResult.qrCodeUrl}
+                                alt="QR Code"
+                                className="w-32 h-32 mt-2"
+                              />
+                            )}
+                            {actionResult.refundAmount && (
+                              <div className="text-green-700 font-bold mt-2">
+                                Refund: ₹{actionResult.refundAmount}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center text-gray-500">
+                      No details found.
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

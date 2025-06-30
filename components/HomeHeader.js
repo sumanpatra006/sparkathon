@@ -2,6 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import MobileNavigation from "./MobileNavigation";
 import { useEffect, useState } from "react";
+import api from "../api/api";
 
 export default function HomeHeader() {
   const router = useRouter();
@@ -9,15 +10,25 @@ export default function HomeHeader() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log("[HomeHeader] Token in localStorage:", token);
-    setIsAuthenticated(!!token);
+    const checkAuth = async () => {
+      try {
+        await api.get("/v1/users/me");
+        setIsAuthenticated(true);
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
   }, [pathname]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      await api.get("/v1/users/logout");
+    } catch (err) {
+      // Optionally handle error
+    }
     setIsAuthenticated(false);
-    window.location.reload();
+    router.push("/");
   };
 
   return (
