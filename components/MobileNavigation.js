@@ -1,9 +1,22 @@
-'use client';
-import { useState } from 'react';
-import { Menu, X, Home, User, Package, Settings, LogOut } from 'lucide-react';
+"use client";
+import { useState, useEffect } from "react";
+import { Menu, X, Home, User, Package, Settings, LogOut } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, [pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    window.location.reload();
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -14,10 +27,11 @@ export default function MobileNavigation() {
   };
 
   const menuItems = [
-    { name: 'Home', icon: Home, href: '/' },
-    { name: 'Dashboard', icon: User, href: '/dashboard' },
-    { name: 'Returns', icon: Package, href: '/returns' },
-    { name: 'Settings', icon: Settings, href: '/settings' },
+    { name: "Home", icon: Home, href: "/" },
+    { name: "Dashboard", icon: User, href: "/dashboard" },
+    { name: "Returns", icon: Package, href: "/returns" },
+    { name: "Settings", icon: Settings, href: "/settings" },
+    { name: "Shopping", icon: Package, href: "/inventory" },
   ];
 
   return (
@@ -28,17 +42,13 @@ export default function MobileNavigation() {
         className="p-2 rounded-lg bg-walmart-blue text-white hover:bg-walmart-dark-blue transition-colors duration-200 cursor-pointer"
         aria-label="Toggle menu"
       >
-        {isOpen ? (
-          <X className="h-6 w-6" />
-        ) : (
-          <Menu className="h-6 w-6" />
-        )}
+        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
       {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={closeMenu}
       />
@@ -46,7 +56,7 @@ export default function MobileNavigation() {
       {/* Mobile Menu */}
       <div
         className={`fixed top-0 left-0 w-80 h-full bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Header */}
@@ -55,7 +65,9 @@ export default function MobileNavigation() {
             <div className="w-8 h-8 bg-walmart-blue rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">W</span>
             </div>
-            <span className="text-xl font-bold text-walmart-blue">Walmart Returns</span>
+            <span className="text-xl font-bold text-walmart-blue">
+              Walmart Returns
+            </span>
           </div>
           <button
             onClick={closeMenu}
@@ -86,24 +98,29 @@ export default function MobileNavigation() {
           <div className="my-6 border-t border-gray-200" />
 
           {/* User Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
-              <div className="w-10 h-10 bg-walmart-blue rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">U</span>
+          {isAuthenticated && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
+                <div className="w-10 h-10 bg-walmart-blue rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">U</span>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">User Name</p>
+                  <p className="text-sm text-gray-500">user@example.com</p>
+                </div>
               </div>
-              <div>
-                <p className="font-medium text-gray-900">User Name</p>
-                <p className="text-sm text-gray-500">user@example.com</p>
-              </div>
-            </div>
 
-            <button className="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-50 transition-colors duration-200 cursor-pointer text-red-600 hover:text-red-700 w-full">
-              <LogOut className="h-5 w-5" />
-              <span className="font-medium">Sign Out</span>
-            </button>
-          </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-50 transition-colors duration-200 cursor-pointer text-red-600 hover:text-red-700 w-full"
+              >
+                <LogOut className="h-5 w-5" />
+                <span className="font-medium">Sign Out</span>
+              </button>
+            </div>
+          )}
         </nav>
       </div>
     </div>
   );
-} 
+}
