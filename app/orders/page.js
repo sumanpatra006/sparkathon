@@ -140,56 +140,64 @@ export default function OrdersPage() {
           style={{ WebkitOverflowScrolling: "touch" }}
         >
           {orders.map((order) => (
-            <div
-              key={order._id}
-              className="bg-white rounded-2xl shadow-lg p-6 border border-[#e0e0e0] text-left"
+  <div
+    key={order._id}
+    className="flex flex-col h-full bg-white rounded-2xl shadow-lg p-6 border border-[#e0e0e0] text-left"
+  >
+    {/* Top Section */}
+    <div>
+      <h2 className="text-xl font-semibold mb-2 text-walmart-dark-blue">
+        Order #{order._id.slice(-6)}
+      </h2>
+      <div className="mb-2 text-gray-700">
+        Status:{" "}
+        <span className="font-bold text-walmart-blue">
+          {order.status}
+        </span>
+      </div>
+      <div className="mb-2 text-gray-700">
+        Order Date: {new Date(order.orderDate).toLocaleString()}
+      </div>
+      <div className="mb-2 text-gray-700">
+        Total Amount:{" "}
+        <span className="font-bold text-walmart-blue">
+          ₹{order.totalAmount}
+        </span>
+      </div>
+      <div className="mb-2 text-gray-700 font-semibold">Items:</div>
+      <ul className="mb-2 pl-4 list-disc text-gray-600">
+        {order.items.map((item) => (
+          <li
+            key={item._id}
+            className="mb-2 flex flex-col md:flex-row md:items-center md:justify-between"
+          >
+            <span>
+              {item.name} (x{item.quantity}) - ₹{item.price}
+            </span>
+            <button
+              className="btn-secondary mt-2 md:mt-0"
+              onClick={() => handleReturnClick(order._id, item)}
             >
-              <h2 className="text-xl font-semibold mb-2 text-walmart-dark-blue">
-                Order #{order._id.slice(-6)}
-              </h2>
-              <div className="mb-2 text-gray-700">
-                Status:{" "}
-                <span className="font-bold text-walmart-blue">
-                  {order.status}
-                </span>
-              </div>
-              <div className="mb-2 text-gray-700">
-                Order Date: {new Date(order.orderDate).toLocaleString()}
-              </div>
-              <div className="mb-2 text-gray-700">
-                Total Amount:{" "}
-                <span className="font-bold text-walmart-blue">
-                  ₹{order.totalAmount}
-                </span>
-              </div>
-              <div className="mb-2 text-gray-700 font-semibold">Items:</div>
-              <ul className="mb-2 pl-4 list-disc text-gray-600">
-                {order.items.map((item) => (
-                  <li
-                    key={item._id}
-                    className="mb-2 flex flex-col md:flex-row md:items-center md:justify-between"
-                  >
-                    <span>
-                      {item.name} (x{item.quantity}) - ₹{item.price}
-                    </span>
-                    <button
-                      className="btn-secondary mt-2 md:mt-0"
-                      onClick={() => handleReturnClick(order._id, item)}
-                    >
-                      Return
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <div className="text-xs text-gray-400">Order ID: {order._id}</div>
-              <button
-                className="mt-4 w-full btn-primary"
-                onClick={() => handleOrderClick(order._id)}
-              >
-                View Details
-              </button>
-            </div>
-          ))}
+              Return
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="text-xs text-gray-400">Order ID: {order._id}</div>
+    </div>
+
+    {/* Bottom Button (Sticky) */}
+    <div className="mt-auto pt-4">
+      <button
+        className="w-full btn-primary"
+        onClick={() => handleOrderClick(order._id)}
+      >
+        View Details
+      </button>
+    </div>
+  </div>
+))}
+
         </div>
       )}
 
@@ -254,7 +262,7 @@ export default function OrdersPage() {
 
       {/* Return Modal */}
       {showReturnModal && returnItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-gradient-to-r from-blue-500 to-purple-600 bg-opacity-40 flex items-center justify-center z-50">
           <div
             className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-[#e0e0e0] relative overflow-y-auto"
             style={{ maxHeight: "90vh" }}
@@ -350,7 +358,7 @@ export default function OrdersPage() {
                   Status:{" "}
                   <span className="font-bold">{returnStatus.status}</span>
                 </div>
-                <div className="mb-1">
+                {/* <div className="mb-1">
                   Risk Level:{" "}
                   <span className="font-bold">{returnStatus.riskLevel}</span>
                 </div>
@@ -361,7 +369,7 @@ export default function OrdersPage() {
                 </div>
                 <div className="mb-1">
                   Final Score: {returnStatus.finalScore}
-                </div>
+                </div> */}
                 <div className="mb-1">
                   Return Date:{" "}
                   {new Date(returnStatus.returnDate).toLocaleString()}

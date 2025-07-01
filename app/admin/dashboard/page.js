@@ -528,7 +528,7 @@ export default function Dashboard() {
             )}
             {/* Return Details Modal */}
             {selectedReturnId && (
-              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+              <div className="fixed inset-0 bg-gradient-to-r from-indigo-500 to-pink-500 bg-opacity-40 flex items-center justify-center z-50">
                 <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-[#e0e0e0] relative">
                   <button
                     className="absolute top-2 right-2 text-gray-400 hover:text-walmart-blue text-2xl font-bold"

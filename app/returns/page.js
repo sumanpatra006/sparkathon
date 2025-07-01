@@ -113,16 +113,16 @@ export default function ReturnsPage() {
                   {ret.status}
                 </span>
               </div>
-              <div className="mb-2 text-gray-700">
+              {/* <div className="mb-2 text-gray-700">
                 Risk Level: <span className="font-bold">{ret.riskLevel}</span>
-              </div>
+              </div> */}
               <div className="mb-2 text-gray-700">
                 Reason: <span className="font-normal">{ret.reason}</span>
               </div>
               <div className="mb-2 text-gray-700">
                 Return Date: {new Date(ret.returnDate).toLocaleString()}
               </div>
-              <div className="mb-2 text-gray-700">
+              {/* <div className="mb-2 text-gray-700">
                 Blur Score: {ret.blurScore}
               </div>
               <div className="mb-2 text-gray-700">
@@ -133,7 +133,7 @@ export default function ReturnsPage() {
               </div>
               <div className="mb-2 text-gray-700">
                 Final Score: {ret.finalScore}
-              </div>
+              </div> */}
               {ret.imageUrl && (
                 <img
                   src={ret.imageUrl}
@@ -170,7 +170,7 @@ export default function ReturnsPage() {
 
       {/* Return Details Modal */}
       {selectedReturnId && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-gradient-to-r from-blue-500 to-purple-600  bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-[#e0e0e0] relative">
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-walmart-blue text-2xl font-bold"
@@ -198,10 +198,10 @@ export default function ReturnsPage() {
                     {returnDetails.status}
                   </span>
                 </div>
-                <div className="mb-2 text-gray-700">
+                {/* <div className="mb-2 text-gray-700">
                   Risk Level:{" "}
                   <span className="font-bold">{returnDetails.riskLevel}</span>
-                </div>
+                </div> */}
                 <div className="mb-2 text-gray-700">
                   Reason:{" "}
                   <span className="font-normal">{returnDetails.reason}</span>
@@ -210,7 +210,7 @@ export default function ReturnsPage() {
                   Return Date:{" "}
                   {new Date(returnDetails.returnDate).toLocaleString()}
                 </div>
-                <div className="mb-2 text-gray-700">
+                {/* <div className="mb-2 text-gray-700">
                   Blur Score: {returnDetails.blurScore}
                 </div>
                 <div className="mb-2 text-gray-700">
@@ -221,7 +221,7 @@ export default function ReturnsPage() {
                 </div>
                 <div className="mb-2 text-gray-700">
                   Final Score: {returnDetails.finalScore}
-                </div>
+                </div> */}
                 {returnDetails.imageUrl && (
                   <img
                     src={returnDetails.imageUrl}
