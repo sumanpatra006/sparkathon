@@ -187,91 +187,66 @@ export default function FeaturesSection() {
             </ul>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          {/* Existing features */}
-          <div className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100">
-            <div className="bg-walmart-yellow rounded-full p-4 mb-4">
-              <Shield className="h-8 w-8 text-white" />
+        
+        {/* Centered buttons section */}
+        <div className="flex justify-center mt-16">
+          <div className="flex gap-8 max-w-4xl">
+            <div>
+              <button
+                onClick={() => (window.location.href = "/orders")}
+                className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100 hover:bg-walmart-blue hover:text-white transition-colors w-full"
+              >
+                <div className="bg-walmart-yellow rounded-full p-4 mb-4">
+                  <svg
+                    className="h-8 w-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 17v-2a4 4 0 014-4h4m0 0V7m0 4l-4-4m0 0l-4 4"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue group-hover:text-white">
+                  My Orders Status
+                </h3>
+                <p className="text-gray-600 group-hover:text-white">
+                  View your past orders and their status
+                </p>
+              </button>
             </div>
-            <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue">
-              Secure Returns
-            </h3>
-            <p className="text-gray-600">Safe and protected return process</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100">
-            <div className="bg-walmart-yellow rounded-full p-4 mb-4">
-              <Clock className="h-8 w-8 text-white" />
+            <div>
+              <button
+                onClick={() => (window.location.href = "/returns")}
+                className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100 hover:bg-walmart-blue hover:text-white transition-colors w-full"
+              >
+                <div className="bg-walmart-yellow rounded-full p-4 mb-4">
+                  <svg
+                    className="h-8 w-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 7v4a2 2 0 01-2 2H7a2 2 0 01-2-2V7m0 0V5a2 2 0 012-2h10a2 2 0 012 2v2m-2 0V5m0 2H7"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue group-hover:text-white">
+                  My Return Summaries
+                </h3>
+                <p className="text-gray-600 group-hover:text-white">
+                  View all your return requests and their status
+                </p>
+              </button>
             </div>
-            <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue">
-              Quick Processing
-            </h3>
-            <p className="text-gray-600">Fast return approval and refunds</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100">
-            <div className="bg-walmart-yellow rounded-full p-4 mb-4">
-              <Truck className="h-8 w-8 text-white" />
-            </div>
-            <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue">
-              Free Shipping
-            </h3>
-            <p className="text-gray-600">No cost return shipping labels</p>
-          </div>
-          {/* Centered bottom row for My Orders Status and My Return Summaries */}
-          <div className="md:col-start-2">
-            <button
-              onClick={() => (window.location.href = "/orders")}
-              className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100 hover:bg-walmart-blue hover:text-white transition-colors w-full"
-            >
-              <div className="bg-walmart-yellow rounded-full p-4 mb-4">
-                <svg
-                  className="h-8 w-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 17v-2a4 4 0 014-4h4m0 0V7m0 4l-4-4m0 0l-4 4"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue group-hover:text-white">
-                My Orders Status
-              </h3>
-              <p className="text-gray-600 group-hover:text-white">
-                View your past orders and their status
-              </p>
-            </button>
-          </div>
-          <div className="md:col-start-3">
-            <button
-              onClick={() => (window.location.href = "/returns")}
-              className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center text-center border border-gray-100 hover:bg-walmart-blue hover:text-white transition-colors w-full"
-            >
-              <div className="bg-walmart-yellow rounded-full p-4 mb-4">
-                <svg
-                  className="h-8 w-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 7v4a2 2 0 01-2 2H7a2 2 0 01-2-2V7m0 0V5a2 2 0 012-2h10a2 2 0 012 2v2m-2 0V5m0 2H7"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2 text-walmart-dark-blue group-hover:text-white">
-                My Return Summaries
-              </h3>
-              <p className="text-gray-600 group-hover:text-white">
-                View all your return requests and their status
-              </p>
-            </button>
           </div>
         </div>
       </div>

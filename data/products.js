@@ -9,7 +9,7 @@ const categories = [
         price: 499.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1486286701208-1d58e9338013?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Tennis Racket",
@@ -17,7 +17,7 @@ const categories = [
         price: 799.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1622163642998-1ea32b0bbc67?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Cricket Bat",
@@ -25,7 +25,7 @@ const categories = [
         price: 999.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1505843271134-3f8d96274623?auto=format&fit=crop&w=400&q=80",
+          "https://plus.unsplash.com/premium_photo-1679917506577-6c986f6faab6?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -38,7 +38,7 @@ const categories = [
         price: 299.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Jeans",
@@ -46,7 +46,7 @@ const categories = [
         price: 999.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Sneakers",
@@ -54,7 +54,7 @@ const categories = [
         price: 1499.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1517260911205-8c6f6fa6c7b7?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1465453869711-7e174808ace9?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -62,12 +62,12 @@ const categories = [
     name: "Home Accessories",
     items: [
       {
-        name: "Bathroom Mug",
+        name: "Coffee Mug",
         productId: "prod-007",
         price: 99.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1696431621200-9068cdb0a1bd?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Wall Clock",
@@ -75,7 +75,7 @@ const categories = [
         price: 399.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1605434181093-608f7914f29b?q=80&w=1211&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Table Lamp",
@@ -83,7 +83,7 @@ const categories = [
         price: 599.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1573676386604-78f8ed228e2b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -96,7 +96,7 @@ const categories = [
         price: 14999.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1575695342320-d2d2d2f9b73f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Bluetooth Speaker",
@@ -104,7 +104,7 @@ const categories = [
         price: 1299.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Laptop",
@@ -112,7 +112,7 @@ const categories = [
         price: 49999.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -125,7 +125,7 @@ const categories = [
         price: 199.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1603162532773-8bcf72814836?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Comics",
@@ -133,7 +133,7 @@ const categories = [
         price: 149.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1601645191163-3fc0d5d64e35?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -146,7 +146,7 @@ const categories = [
         price: 499.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1700825073852-1913b3886584?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Puzzle",
@@ -154,7 +154,7 @@ const categories = [
         price: 299.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1586266984195-7611e3d5e60c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -167,7 +167,7 @@ const categories = [
         price: 599.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1625827626291-6fbd47a431ae?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Olive Oil",
@@ -175,7 +175,7 @@ const categories = [
         price: 399.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=718&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -188,7 +188,7 @@ const categories = [
         price: 199.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1653919198052-546d44e2458e?q=80&w=714&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Shampoo",
@@ -196,7 +196,7 @@ const categories = [
         price: 299.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1701992678972-d5a053ad0fb0?q=80&w=657&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },
@@ -209,7 +209,7 @@ const categories = [
         price: 349.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80",
+          "https://plus.unsplash.com/premium_photo-1726768966807-330ecbfa087d?q=80&w=719&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         name: "Tyre Polish",
@@ -217,7 +217,7 @@ const categories = [
         price: 249.99,
         quantity: 20,
         image:
-          "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1673297821205-e0575bbc2ab7?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
     ],
   },

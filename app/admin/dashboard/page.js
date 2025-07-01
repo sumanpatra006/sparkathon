@@ -606,13 +606,15 @@ export default function Dashboard() {
                             disabled={actionLoading}
                             onClick={() => handleAdminAction("Rejected")}
                           >
-                            Reject
+                            On Store 
+                            Inspection
                           </button>
                           <button
                             className="btn-secondary"
                             disabled={actionLoading}
                             onClick={() => setAdminAction("refund")}
                           >
+                            Partial
                             Refund
                           </button>
                         </div>
