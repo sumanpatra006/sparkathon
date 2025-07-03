@@ -90,12 +90,14 @@ export default function ImageVerificationList({
               className="btn-secondary px-4 py-1 text-xs"
               onClick={() => handleAction("reject", item.id)}
             >
-              Reject
+              On Store
+              Inspection
             </button>
             <button
               className="btn-secondary px-4 py-1 text-xs"
               onClick={() => handleAction("refund", item.id)}
             >
+              Partial
               Refund
             </button>
           </div>

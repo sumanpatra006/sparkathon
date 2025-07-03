@@ -193,13 +193,15 @@ export default function VerificationAnalysisPage() {
                 disabled={actionLoading || !adminMessage.trim()}
                 onClick={() => handleAdminAction("Rejected")}
               >
-                Reject
+                On Store 
+                Inspection
               </button>
               <button
                 className="btn-secondary"
                 disabled={actionLoading || !adminMessage.trim()}
                 onClick={() => setShowRefund(true)}
               >
+                Partial 
                 Refund
               </button>
             </div>
